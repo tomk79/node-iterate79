@@ -1,0 +1,24 @@
+{
+  "name": "iterate79",
+  "version": "0.0.1",
+  "description": "JavaScript Iterator.",
+  "main": "node/main.js",
+  "scripts": {
+    "test": "mocha --ui tdd ./tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomk79/node-iterate79.git"
+  },
+  "author": "Tomoya Koyanagi <tomk79@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tomk79/node-iterate79/issues"
+  },
+  "homepage": "https://github.com/tomk79/node-iterate79#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
+  }
+}
