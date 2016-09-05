@@ -1,7 +1,7 @@
 {
   "name": "iterate79",
-  "version": "0.0.1",
-  "description": "JavaScript Iterator.",
+  "version": "0.1.0",
+  "description": "A Simple JavaScript Iterator.",
   "main": "node/main.js",
   "scripts": {
     "test": "mocha --ui tdd ./tests/"
