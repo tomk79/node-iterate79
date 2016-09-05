@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/tomk79/node-iterate79#readme",
   "dependencies": {
+    "es6-promise": "^3.2.1"
   },
   "devDependencies": {
     "mocha": "^2.1.0"

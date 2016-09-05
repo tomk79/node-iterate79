@@ -2,6 +2,7 @@
  * node-iterate79
  */
 (function(exports){
+	var Promise = require('es6-promise').Promise;
 
 	/**
 	 * 配列の直列処理
@@ -18,12 +19,15 @@
 			this.fncComplete = fncComplete||function(){};
 
 			this.next = function(){
-				if( this.idx+1 >= this.idxs.length ){
-					this.fncComplete();
-					return this;
-				}
-				this.idx ++;
-				this.fnc( this, this.ary[this.idxs[this.idx]], this.idxs[this.idx] );
+				var _this = this;
+				new Promise(function(rlv){rlv();}).then(function(){ return new Promise(function(rlv, rjt){
+					if( _this.idx+1 >= _this.idxs.length ){
+						_this.fncComplete();
+						return _this;
+					}
+					_this.idx ++;
+					_this.fnc( _this, _this.ary[_this.idxs[_this.idx]], _this.idxs[_this.idx] );
+				}); });
 				return this;
 			}
 			this.next();
@@ -51,21 +55,29 @@
 			var isStarted = false;//2重起動防止
 
 			this.start = function(arg){
+				var _this = this;
 				if(isStarted){return this;}
 				isStarted = true;
-				return this.next(arg);
+				new Promise(function(rlv){rlv();}).then(function(){ return new Promise(function(rlv, rjt){
+					_this.next(arg);
+				}); });
+				return this;
 			}
 
 			this.next = function(arg){
+				var _this = this;
 				arg = arg||{};
 				if(funcs.length <= idx){return this;}
-				(funcs[idx++])(this, arg);
+				new Promise(function(rlv){rlv();}).then(function(){ return new Promise(function(rlv, rjt){
+					(funcs[idx++])(_this, arg);
+				}); });
 				return this;
 			};
 		}
 		var rtn = new iterator(aryFuncs);
 		if( mode == 'implicit' ){
-			return rtn.start(defaultArg);
+			rtn.start(defaultArg);
+			return rtn;
 		}
 		return rtn;
 	}
