@@ -27,6 +27,7 @@
 			this.bundleProgress = 1;
 			this.ary = ary||[];
 			this.fnc = fnc||function(){};
+			this.completed = false;
 			this.fncComplete = fncComplete||function(){};
 
 			this.next = function(){
@@ -38,7 +39,7 @@
 						return;
 					}
 					if( _this.idx+1 >= _this.idxs.length && _this.bundleProgress<=0 ){
-						_this.fncComplete();
+						_this.destroy();
 						return;
 					}
 					var tmp_idx = _this.idx;
@@ -55,6 +56,20 @@
 					return;
 				}); });
 				return this;
+			}
+			this.break = function(){
+				var _this = this;
+				_this.destroy();
+				return;
+			}
+			this.destroy = function(){
+				var _this = this;
+				_this.idx = _this.idxs.length - 1;
+				_this.bundleProgress = 0;
+				if(_this.completed){return;}
+				_this.completed = true;
+				_this.fncComplete();
+				return;
 			}
 			this.next();
 		})(ary, bundle, fnc, fncComplete);

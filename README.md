@@ -84,6 +84,36 @@ it79.ary(
 );
 ```
 
+### 配列の直列処理を中断する
+
+```js
+var it79 = require('iterate79');
+it79.ary(
+	{
+		'one': 1,
+		'two': 2,
+		'three': 3,
+		'four': 4,
+		'five': 5,
+		'six': 6,
+		'seven': 7,
+		'eight': 8
+	} ,
+	function(it, data, idx){
+		setTimeout(function(){
+			if( idx == 'five' ){
+				it.break() // five のときに中断し、その後の処理は実行しない
+			}else{
+				it.next();
+			}
+		}, 100);
+	},
+	function(){
+		console.log('done!');
+	}
+);
+```
+
 ### 関数を直列処理する
 
 ```js
@@ -118,6 +148,7 @@ it79.fnc(
 ### iterate79 0.2.0 (2016-xx-xx)
 
 - `ary()` に、 bundle機能を追加。複数件ずつ並列して処理するオプション。
+- `ary()` に、 `it.break()` を追加。配列の直列処理を途中で抜けられるようになった。
 
 ### iterate79 0.1.0 (2016-09-05)
 

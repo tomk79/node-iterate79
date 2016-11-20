@@ -89,7 +89,7 @@ describe('配列の直列処理', function() {
 	});
 
 	it('配列の直列処理を中断する', function(done) {
-		this.timeout(700);
+		this.timeout(1000);
 
 		var lastKey = 0;
 		var lastVal = 0;
@@ -111,16 +111,16 @@ describe('配列の直列処理', function() {
 				lastKey = idx;
 				lastVal = data;
 				setTimeout(function(){
-					if(lastKey == 'five'){
-						it.break();//
+					if(idx == 'five'){
+						it.break();//ここで直列処理を中断して抜ける
 					}else{
 						it.next();
 					}
 				}, 100);
 			},
 			function(){
-				assert.equal(lastKey, 'five');
-				assert.equal(lastVal, 5);
+				assert.equal(lastKey, 'six');// 端数の途中で break したので、six までは実行される。
+				assert.equal(lastVal, 6);
 				done();
 			}
 		);
