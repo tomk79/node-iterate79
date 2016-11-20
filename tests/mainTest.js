@@ -229,7 +229,6 @@ describe('メソッドの直列処理', function() {
 					setTimeout(function(){
 						assert.equal(val, 3);
 						done();
-						it1.next(arg);
 					},100);
 				}
 			]
@@ -251,20 +250,28 @@ describe('メソッドの直列処理', function() {
 							'fnc1': function(it2, arg2){
 								// val = 1;
 								// it2.next(arg2);
-								it2.goto('fnc3', arg2); // <- fnc2 をスキップして fnc3 を実行する
+								setTimeout(function(){
+									it2.goto('fnc3', arg2); // <- fnc2 をスキップして fnc3 を実行する
+								}, 500);
 							},
 							'fnc2': function(it2, arg2){
 								val = 2;
 								val2 = 'fnc2';//この関数はスキップされる
-								it2.next(arg2);
+								setTimeout(function(){
+									it2.next(arg2);
+								}, 500);
 							},
 							'fnc3': function(it2, arg2){
 								val = 3;
-								it2.next(arg2);
+								setTimeout(function(){
+									it2.next(arg2);
+								}, 500);
 							},
 							'fnc4': function(it2, arg2){
 								val = 4;
-								it1.next(arg);
+								setTimeout(function(){
+									it1.next(arg);
+								}, 500);
 							}
 						}
 					);
@@ -272,10 +279,12 @@ describe('メソッドの直列処理', function() {
 				function(it1, arg){
 					// console.log(val);
 					// console.log(val2);
-					assert.equal(val, 4);
-					assert.equal(val2, 'nothing');
-					done();
-					// it1.next(arg);
+					setTimeout(function(){
+						assert.equal(val, 4);
+						assert.equal(val2, 'nothing');
+						done();
+						it1.next(arg);
+					}, 500);
 				}
 			]
 		);

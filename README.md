@@ -43,8 +43,8 @@ it79.ary(
 		'three': 3
 	} ,
 	function(it, data, idx){
-		console.log(data);// <- 1, next 2, next 3
-		console.log(idx);// <- 'one', next 'two', next 'three'
+		console.log(data);// <- 1, next 2, next 3, ...
+		console.log(idx);// <- 'one', next 'two', next 'three', ...
 		setTimeout(function(){
 			it.next();
 		}, 100);
@@ -70,13 +70,9 @@ it79.ary(
 		'seven': 7,
 		'eight': 8
 	} ,
-	3,
+	3, // 3件ずつ並行処理する
 	function(it, data, idx){
-		console.log(data);// <- 1, next 2, next 3
-		console.log(idx);// <- 'one', next 'two', next 'three'
-		setTimeout(function(){
-			it.next();
-		}, 100);
+		it.next();
 	},
 	function(){
 		console.log('done!');
@@ -102,7 +98,7 @@ it79.ary(
 	function(it, data, idx){
 		setTimeout(function(){
 			if( idx == 'five' ){
-				it.break() // five のときに中断し、その後の処理は実行しない
+				it.break() // 'five' のときに中断し、その後の処理は実行しない
 			}else{
 				it.next();
 			}
@@ -124,16 +120,12 @@ it79.fnc(
 		function(it, arg){
 			console.log(arg.test); // <- undefined
 			arg.test = 1;
-			setTimeout(function(){
-				it.next(arg);
-			},1000);
+			it.next(arg);
 		},
 		function(it, arg){
 			console.log(arg.test); // <- 1
 			arg.test = 2;
-			setTimeout(function(){
-				it.next(arg);
-			},10);
+			it.next(arg);
 		},
 		function(it, arg){
 			console.log(arg.test); // <- 2
@@ -151,24 +143,45 @@ it79.fnc(
 	{} , // <- initial value of `arg`.
 	{
 		'fnc1': function(it, arg){
-			console.log(arg.test); // <- undefined
 			arg.test = 1;
-			setTimeout(function(){
-				it.goto('fnc3', arg); // fnc2 をスキップして fnc3 へ進む
-			},1000);
+			it.goto('fnc3', arg); // fnc2 をスキップして fnc3 へ進む
 		},
 		'fnc2': function(it, arg){
 			arg.test = 2; // この関数はスキップされる
-			setTimeout(function(){
-				it.next(arg);
-			},10);
+			it.next(arg);
 		},
 		'fnc3': function(it, arg){
 			console.log(arg.test); // <- 1
-			it.next();
+			it.next(arg);
 		}
 	}
 );
+```
+
+### 関数の直列処理を中断する
+
+```js
+function( callback ){
+	var it79 = require('iterate79');
+	it79.fnc(
+		{} , // <- initial value of `arg`.
+		{
+			'fnc1': function(it, arg){
+				arg.test = 1;
+				callback();
+				it.break(); // ここで中断。fnc2以降は実行されない。
+			},
+			'fnc2': function(it, arg){
+				arg.test = 2; // この関数はスキップされる
+				it.next(arg);
+			},
+			'fnc3': function(it, arg){
+				arg.test = 3; // この関数はスキップされる
+				callback();
+			}
+		}
+	);
+}
 ```
 
 ## Change log
@@ -179,6 +192,7 @@ it79.fnc(
 - `ary()` に、 `it.break()` を追加。配列の直列処理を途中で抜けられるようになった。
 - `fnc()` で、 連想配列に格納された関数群を直列処理できるようになった。
 - `fnc()` に、 `it.goto()` を追加。関数の添字を指定してジャンプできるようになった。
+- `fnc()` に、 `it.break()` を追加。関数の直列処理を途中で抜けられるようになった。
 
 ### iterate79 0.1.0 (2016-09-05)
 

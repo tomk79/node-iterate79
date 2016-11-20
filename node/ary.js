@@ -18,6 +18,7 @@
 		bundle = bundle || 1;
 
 		return new (function( ary, bundle, fnc, fncComplete ){
+			var _this = this;
 			this.idx = -1;
 			this.idxs = []; // <- array keys
 			for( var i in ary ){
@@ -72,6 +73,7 @@
 				return;
 			}
 			this.next();
+			return;
 		})(ary, bundle, fnc, fncComplete);
 	}
 

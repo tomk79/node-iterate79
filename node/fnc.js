@@ -42,7 +42,6 @@
 				}); });
 				return;
 			}
-
 			this.next = function(arg){
 				var _this = this;
 				arg = arg||{};
@@ -52,7 +51,6 @@
 				}); });
 				return;
 			};
-
 			this.goto = function(key, arg){
 				var _this = this;
 				_this.idx = _this.idxsidxs[key];
@@ -63,6 +61,14 @@
 				}); });
 				return;
 			};
+			this.break = function(){
+				this.destroy();
+				return;
+			}
+			this.destroy = function(){
+				return;
+			}
+			return;
 		}
 		var rtn = new iterator(aryFuncs);
 		if( mode == 'implicit' ){
