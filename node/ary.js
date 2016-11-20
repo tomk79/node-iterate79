@@ -7,13 +7,24 @@
 	/**
 	 * 配列の直列処理
 	 */
-	module.exports = function(ary, fnc, fncComplete){
-		return new (function( ary, fnc, fncComplete ){
+	module.exports = function( ary, fnc, fncComplete ){
+		var bundle = 1;
+		if( arguments.length >= 4 ){
+			ary = arguments[0];
+			bundle = arguments[1];
+			fnc = arguments[arguments.length-2];
+			fncComplete = arguments[arguments.length-1];
+		}
+		bundle = bundle || 1;
+
+		return new (function( ary, bundle, fnc, fncComplete ){
 			this.idx = -1;
-			this.idxs = [];
+			this.idxs = []; // <- array keys
 			for( var i in ary ){
 				this.idxs.push(i);
 			}
+			this.bundle = bundle||1;
+			this.bundleProgress = 1;
 			this.ary = ary||[];
 			this.fnc = fnc||function(){};
 			this.fncComplete = fncComplete||function(){};
@@ -21,17 +32,32 @@
 			this.next = function(){
 				var _this = this;
 				new Promise(function(rlv){rlv();}).then(function(){ return new Promise(function(rlv, rjt){
-					if( _this.idx+1 >= _this.idxs.length ){
-						_this.fncComplete();
-						return _this;
+					_this.bundleProgress --;
+					if( _this.bundleProgress > 0 ){
+						// bundleごとの処理が終わっていない
+						return;
 					}
-					_this.idx ++;
-					_this.fnc( _this, _this.ary[_this.idxs[_this.idx]], _this.idxs[_this.idx] );
+					if( _this.idx+1 >= _this.idxs.length && _this.bundleProgress<=0 ){
+						_this.fncComplete();
+						return;
+					}
+					var tmp_idx = _this.idx;
+					_this.idx = _this.idx+_this.bundle;
+					for(var i = 0; i<_this.bundle; i++){
+						tmp_idx ++;
+						if( tmp_idx >= _this.idxs.length ){
+							// 端数があった場合、bundleの数に欠員が出る可能性がある。
+							break;
+						}
+						_this.bundleProgress ++;
+						_this.fnc( _this, _this.ary[_this.idxs[tmp_idx]], _this.idxs[tmp_idx] );
+					}
+					return;
 				}); });
 				return this;
 			}
 			this.next();
-		})(ary, fnc, fncComplete);
+		})(ary, bundle, fnc, fncComplete);
 	}
 
 })(module);

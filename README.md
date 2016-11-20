@@ -1,4 +1,4 @@
-# node-iterate79
+# iterate79
 
 A Simple JavaScript Iterator.
 
@@ -55,7 +55,7 @@ it79.ary(
 );
 ```
 
-### 配列から複数件ずつ並列処理する
+### 配列から複数件ずつ並列処理する(bundle機能)
 
 ```js
 var it79 = require('iterate79');
@@ -113,6 +113,19 @@ it79.fnc(
 );
 ```
 
+## Change log
+
+### iterate79 0.2.0 (2016-xx-xx)
+
+- `ary()` に、 bundle機能を追加。複数件ずつ並列して処理するオプション。
+
+### iterate79 0.1.0 (2016-09-05)
+
+- stack overflow が起きることがある不具合を修正。
+
+### iterate79 0.0.1 (2015-08-20)
+
+- initial release.
 
 ## License
 

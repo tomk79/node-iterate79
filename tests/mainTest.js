@@ -52,7 +52,7 @@ describe('配列の直列処理', function() {
 	});
 
 	it('配列を複数件ずつ並列処理する', function(done) {
-		this.timeout(500);
+		this.timeout(700);
 
 		var val = 0;
 		var obj = {
