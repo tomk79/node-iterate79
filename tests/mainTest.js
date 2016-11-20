@@ -237,10 +237,10 @@ describe('メソッドの直列処理', function() {
 	});
 
 	it('任意の関数にジャンプする', function(done) {
-		this.timeout(5000);
+		this.timeout(10*1000);
 
 		var val = 0;
-		var val2 = 0;
+		var val2 = 'nothing';
 		it79.fnc(
 			{},
 			[
@@ -249,26 +249,20 @@ describe('メソッドの直列処理', function() {
 						{},
 						{
 							'fnc1': function(it2, arg2){
-								val = 1;
-								setTimeout(function(){
-									it2.goto('fnc3', arg2); // <- fnc2 をスキップして fnc3 を実行する
-								},100);
+								// val = 1;
+								// it2.next(arg2);
+								it2.goto('fnc3', arg2); // <- fnc2 をスキップして fnc3 を実行する
 							},
 							'fnc2': function(it2, arg2){
 								val = 2;
-								val2 = 2;//この関数はスキップされる
-								setTimeout(function(){
-									it2.next(arg2);
-								},100);
+								val2 = 'fnc2';//この関数はスキップされる
+								it2.next(arg2);
 							},
 							'fnc3': function(it2, arg2){
 								val = 3;
-								setTimeout(function(){
-									it2.next(arg2);
-								},100);
+								it2.next(arg2);
 							},
 							'fnc4': function(it2, arg2){
-								// これは実行されない
 								val = 4;
 								it1.next(arg);
 							}
@@ -276,12 +270,12 @@ describe('メソッドの直列処理', function() {
 					);
 				},
 				function(it1, arg){
-					setTimeout(function(){
-						assert.equal(val, 4);
-						assert.equal(val2, 0);
-						done();
-						it1.next(arg);
-					},100);
+					// console.log(val);
+					// console.log(val2);
+					assert.equal(val, 4);
+					assert.equal(val2, 'nothing');
+					done();
+					// it1.next(arg);
 				}
 			]
 		);

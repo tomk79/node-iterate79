@@ -143,12 +143,42 @@ it79.fnc(
 );
 ```
 
+### 関数の直列処理で連想配列のキーを指定してジャンプする
+
+```js
+var it79 = require('iterate79');
+it79.fnc(
+	{} , // <- initial value of `arg`.
+	{
+		'fnc1': function(it, arg){
+			console.log(arg.test); // <- undefined
+			arg.test = 1;
+			setTimeout(function(){
+				it.goto('fnc3', arg); // fnc2 をスキップして fnc3 へ進む
+			},1000);
+		},
+		'fnc2': function(it, arg){
+			arg.test = 2; // この関数はスキップされる
+			setTimeout(function(){
+				it.next(arg);
+			},10);
+		},
+		'fnc3': function(it, arg){
+			console.log(arg.test); // <- 1
+			it.next();
+		}
+	}
+);
+```
+
 ## Change log
 
 ### iterate79 0.2.0 (2016-xx-xx)
 
 - `ary()` に、 bundle機能を追加。複数件ずつ並列して処理するオプション。
 - `ary()` に、 `it.break()` を追加。配列の直列処理を途中で抜けられるようになった。
+- `fnc()` で、 連想配列に格納された関数群を直列処理できるようになった。
+- `fnc()` に、 `it.goto()` を追加。関数の添字を指定してジャンプできるようになった。
 
 ### iterate79 0.1.0 (2016-09-05)
 

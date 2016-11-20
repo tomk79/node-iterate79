@@ -19,29 +19,49 @@
 
 		function iterator( aryFuncs ){
 			aryFuncs = aryFuncs||[];
+			var _this = this;
 
-			var idx = 0;
-			var funcs = aryFuncs;
+			_this.idx = 0;
+			_this.idxs = []; // <- array keys
+			for( var i in aryFuncs ){
+				_this.idxs.push(i);
+			}
+			_this.idxsidxs = {}; // <- array keys keys
+			for( var i in _this.idxs ){
+				_this.idxsidxs[_this.idxs[i]] = i;
+			}
+			_this.funcs = aryFuncs;
 			var isStarted = false;//2重起動防止
 
 			this.start = function(arg){
 				var _this = this;
-				if(isStarted){return this;}
+				if(isStarted){return;}
 				isStarted = true;
 				new Promise(function(rlv){rlv();}).then(function(){ return new Promise(function(rlv, rjt){
 					_this.next(arg);
 				}); });
-				return this;
+				return;
 			}
 
 			this.next = function(arg){
 				var _this = this;
 				arg = arg||{};
-				if(funcs.length <= idx){return this;}
+				if(_this.idxs.length <= _this.idx){return;}
 				new Promise(function(rlv){rlv();}).then(function(){ return new Promise(function(rlv, rjt){
-					(funcs[idx++])(_this, arg);
+					(_this.funcs[_this.idxs[_this.idx++]])(_this, arg);
 				}); });
-				return this;
+				return;
+			};
+
+			this.goto = function(key, arg){
+				var _this = this;
+				_this.idx = _this.idxsidxs[key];
+				arg = arg||{};
+				if(_this.idxs.length <= _this.idx){return;}
+				new Promise(function(rlv){rlv();}).then(function(){ return new Promise(function(rlv, rjt){
+					(_this.funcs[_this.idxs[_this.idx++]])(_this, arg);
+				}); });
+				return;
 			};
 		}
 		var rtn = new iterator(aryFuncs);
