@@ -11,6 +11,7 @@ $ npm install --save iterate79
 ## Usage
 
 ### 配列を直列処理する
+
 ```js
 var it79 = require('iterate79');
 it79.ary(
@@ -186,7 +187,7 @@ function( callback ){
 
 ## Change log
 
-### iterate79 0.2.0 (2016-xx-xx)
+### iterate79 1.0.0 (2016-11-20)
 
 - `ary()` に、 bundle機能を追加。複数件ずつ並列して処理するオプション。
 - `ary()` に、 `it.break()` を追加。配列の直列処理を途中で抜けられるようになった。
