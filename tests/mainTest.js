@@ -51,6 +51,37 @@ describe('配列の直列処理', function() {
 		);
 	});
 
+	it('配列を複数件ずつ並列処理する', function(done) {
+		this.timeout(500);
+
+		var val = 0;
+		var obj = {
+			'one': 1,
+			'two': 2,
+			'three': 3,
+			'four': 4,
+			'five': 5,
+			'six': 6,
+			'seven': 7,
+			'eight': 8
+		};
+		it79.ary(
+			obj ,
+			3, // 3件ずつ並列処理
+			function(it, data, idx){
+				assert.equal(data, obj[idx]);
+				val ++;
+				setTimeout(function(){
+					it.next();
+				}, 100);
+			},
+			function(){
+				assert.equal(val, 8);
+				done();
+			}
+		);
+	});
+
 });
 
 describe('メソッドの直列処理', function() {

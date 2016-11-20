@@ -30,7 +30,6 @@ it79.ary(
 		console.log('done!');
 	}
 );
-
 ```
 
 ### オブジェクト(連想配列)を直列処理する
@@ -54,7 +53,35 @@ it79.ary(
 		console.log('done!');
 	}
 );
+```
 
+### 配列から複数件ずつ並列処理する
+
+```js
+var it79 = require('iterate79');
+it79.ary(
+	{
+		'one': 1,
+		'two': 2,
+		'three': 3,
+		'four': 4,
+		'five': 5,
+		'six': 6,
+		'seven': 7,
+		'eight': 8
+	} ,
+	3,
+	function(it, data, idx){
+		console.log(data);// <- 1, next 2, next 3
+		console.log(idx);// <- 'one', next 'two', next 'three'
+		setTimeout(function(){
+			it.next();
+		}, 100);
+	},
+	function(){
+		console.log('done!');
+	}
+);
 ```
 
 ### 関数を直列処理する

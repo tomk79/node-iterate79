@@ -1,6 +1,6 @@
 {
   "name": "iterate79",
-  "version": "0.1.0",
+  "version": "0.2.0-alpha.1",
   "description": "A Simple JavaScript Iterator.",
   "main": "node/main.js",
   "scripts": {
