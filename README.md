@@ -190,7 +190,7 @@ function( callback ){
 ```js
 var it79 = require('iterate79');
 var queue = new it79.queue({
-	'threadLimit': 3 , // 最大3スレッドの並行処理
+	'threadLimit': 3 , // 並行処理する場合のスレッド数上限
 	'process': function(data, done){
 		// キュー1件あたりの処理
 		console.log('---- process:', data);
