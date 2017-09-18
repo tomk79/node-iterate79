@@ -185,7 +185,30 @@ function( callback ){
 }
 ```
 
+### キューを処理する
+
+```js
+var it79 = require('iterate79');
+var queue = new it79.queue({
+	'threadLimit': 3 , // 最大3スレッドの並行処理
+	'process': function(data, done){
+		// キュー1件あたりの処理
+		console.log('---- process:', data);
+		done();
+	}
+});
+queue.push({"queueData": "Queue 1"});
+queue.push({"queueData": "Queue 2"});
+queue.push({"queueData": "Queue 3"});
+queue.push({"queueData": "Queue 4"});
+queue.push({"queueData": "Queue 5"});
+```
+
 ## Change log
+
+### iterate79 1.0.0 (2017-??-??)
+
+- 新しいAPI `it79.queue()` を追加。
 
 ### iterate79 1.0.0 (2016-11-20)
 

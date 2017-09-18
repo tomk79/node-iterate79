@@ -13,5 +13,10 @@
 	 */
 	module.exports.fnc = require('./fnc.js');
 
+	/**
+	 * キュー処理
+	 */
+	module.exports.queue = require('./queue.js');
+
 
 })(module);
