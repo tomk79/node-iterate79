@@ -56,7 +56,7 @@ describe('Queue', function() {
 			}
 		});
 		// console.log(queue);
-		queue.push({'sleep': 1000, 'char': 'a'});
+		var idA = queue.push({'sleep': 1000, 'char': 'a'});
 		queue.push({'sleep':  100, 'char': 'b'});
 		queue.push({'sleep':  100, 'char': 'c'});
 		queue.push({'sleep':  100, 'char': 'd'});
@@ -67,7 +67,25 @@ describe('Queue', function() {
 		queue.push({'sleep': 1000, 'char': 'i'});
 		queue.push({'sleep': 1000, 'char': 'j'});
 		queue.push({'sleep': 1000, 'char': 'k'});
-		queue.push({'sleep': 1000, 'char': 'l'});
+		var idL = queue.push({'sleep': 1000, 'char': 'l'});
+
+		setTimeout(function(){
+			var allStatus = queue.getAllStatus();
+			var statusCount = 0, activeCount = 0;
+			for( var idx in allStatus ){
+				statusCount ++;
+				if( allStatus[idx] == 2 ){ // 2 = 実行中のキュー数
+					activeCount ++;
+				}
+			}
+			assert.equal(statusCount, 5);
+			assert.equal(activeCount, 3);
+			assert.equal(queue.checkStatus(idA), 'progressing');
+			assert.equal(queue.checkStatus(idL), 'waiting');
+		}, 500);
+		setTimeout(function(){
+			assert.equal(queue.checkStatus(idA), 'undefined');
+		}, 1200);
 
 		setTimeout(function(){
 			assert.equal(charFin, 'bcdefghaijkl'); // 並列処理なので、時間が係る処理の前に短い処理が割り込むことができる

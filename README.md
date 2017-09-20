@@ -201,12 +201,15 @@ queue.push({"queueData": "Queue 1"});
 queue.push({"queueData": "Queue 2"});
 queue.push({"queueData": "Queue 3"});
 queue.push({"queueData": "Queue 4"});
-queue.push({"queueData": "Queue 5"});
+var queueId5 = queue.push({"queueData": "Queue 5"});
+
+console.log( queue.checkStatus(queueId5) );
+    // This returns `waiting`, `progressing`, or `undefined`.
 ```
 
 ## Change log
 
-### iterate79 1.0.0 (2017-??-??)
+### iterate79 1.1.0 (2017-??-??)
 
 - 新しいAPI `it79.queue()` を追加。
 
