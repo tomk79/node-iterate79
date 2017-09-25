@@ -134,6 +134,8 @@ module.exports = function(_options){
 				status[currentData.id] = undefined; delete(status[currentData.id]); // <- 処理済み にステータスを変更
 				threads[threadNumber].active = false;
 				runQueue();
+			}, {
+				'id': currentData.id
 			});
 		}); });
 		return;

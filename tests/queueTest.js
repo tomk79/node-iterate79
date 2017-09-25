@@ -11,9 +11,10 @@ describe('Queue', function() {
 
 		var queue = new it79.queue({
 			'threadLimit': 1,
-			'process': function(data, itDone){
+			'process': function(data, itDone, queryInfo){
 				// console.log('=-=-=-=-= process');
 				// console.log(data);
+				// console.log(queryInfo);
 				setTimeout(function(){
 					charFin += data.char;
 					itDone();
