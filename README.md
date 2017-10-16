@@ -209,11 +209,11 @@ console.log( queue.checkStatus(queueId5) );
 
 ## Change log
 
-### iterate79 1.1.0 (2017-??-??)
+### iterate79@1.1.0 (2017-10-16)
 
 - 新しいAPI `it79.queue()` を追加。
 
-### iterate79 1.0.0 (2016-11-20)
+### iterate79@1.0.0 (2016-11-20)
 
 - `ary()` に、 bundle機能を追加。複数件ずつ並列して処理するオプション。
 - `ary()` に、 `it.break()` を追加。配列の直列処理を途中で抜けられるようになった。
@@ -221,11 +221,11 @@ console.log( queue.checkStatus(queueId5) );
 - `fnc()` に、 `it.goto()` を追加。関数の添字を指定してジャンプできるようになった。
 - `fnc()` に、 `it.break()` を追加。関数の直列処理を途中で抜けられるようになった。
 
-### iterate79 0.1.0 (2016-09-05)
+### iterate79@0.1.0 (2016-09-05)
 
 - stack overflow が起きることがある不具合を修正。
 
-### iterate79 0.0.1 (2015-08-20)
+### iterate79@0.0.1 (2015-08-20)
 
 - initial release.
 
