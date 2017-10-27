@@ -41,7 +41,7 @@ describe('Queue', function() {
 		}, 5800); // 1スレッドで直列処理するので、合計秒数は少なくともかかる
 	});
 
-	it('Queue Test (3 Threads)', function(done) {
+	it('Queue Test (3 Threads, update, remove)', function(done) {
 		this.timeout(10000);
 		var charFin = '';
 
@@ -60,7 +60,7 @@ describe('Queue', function() {
 		var idA = queue.push({'sleep': 1000, 'char': 'a'});
 		queue.push({'sleep':  100, 'char': 'b'});
 		queue.push({'sleep':  100, 'char': 'c'});
-		queue.push({'sleep':  100, 'char': 'd'});
+		var idD = queue.push({'sleep':  100, 'char': 'd'});
 		queue.push({'sleep':  100, 'char': 'e'});
 		queue.push({'sleep':  100, 'char': 'f'});
 		queue.push({'sleep':  100, 'char': 'g'});
@@ -69,6 +69,9 @@ describe('Queue', function() {
 		queue.push({'sleep': 1000, 'char': 'j'});
 		queue.push({'sleep': 1000, 'char': 'k'});
 		var idL = queue.push({'sleep': 1000, 'char': 'l'});
+
+		assert.ok(queue.remove(idD)); // dを削除
+		assert.equal(queue.checkStatus(idD), 'removed'); // 削除フラグが立つのみで、物理的には行列待ちを続ける
 		assert.ok(queue.update(idL, {'sleep': 1000, 'char': 'L'})); // Lのみ大文字に置き換え
 
 		setTimeout(function(){
@@ -83,6 +86,7 @@ describe('Queue', function() {
 			assert.equal(statusCount, 5);
 			assert.equal(activeCount, 3);
 			assert.equal(queue.checkStatus(idA), 'progressing');
+			assert.equal(queue.checkStatus(idD), 'undefined');
 			assert.equal(queue.checkStatus(idL), 'waiting');
 		}, 500);
 		setTimeout(function(){
@@ -90,7 +94,7 @@ describe('Queue', function() {
 		}, 1200);
 
 		setTimeout(function(){
-			assert.equal(charFin, 'bcdefghaijkL'); // 並列処理なので、時間が係る処理の前に短い処理が割り込むことができる
+			assert.equal(charFin, 'bcefghaijkL'); // 並列処理なので、時間が係る処理の前に短い処理が割り込むことができる
 			done();
 		}, 4200); // 3スレッド並列処理されるので、合計秒数より早く終る
 	});

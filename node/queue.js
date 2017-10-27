@@ -52,8 +52,8 @@ module.exports = function(_options){
 	 * QueueItemを更新する
 	 */
 	this.update = function(queueItemId, data){
-		var status = this.checkStatus(queueItemId);
-		if(status != 'waiting'){
+		var st = this.checkStatus(queueItemId);
+		if(st != 'waiting'){
 			// 待ち状態でなければ更新できない
 			return false;
 		}
@@ -67,6 +67,19 @@ module.exports = function(_options){
 	}
 
 	/**
+	 * QueueItemを削除する
+	 */
+	this.remove = function(queueItemId){
+		var st = this.checkStatus(queueItemId);
+		if(st != 'waiting'){
+			// 待ち状態でなければ削除できない
+			return false;
+		}
+		status[queueItemId] = 99; // <- removed
+		return true;
+	}
+
+	/**
 	 * 状態を確認する
 	 */
 	this.checkStatus = function(queueItemId){
@@ -76,6 +89,8 @@ module.exports = function(_options){
 				return 'waiting'; break;
 			case 2:
 				return 'progressing'; break;
+			case 99:
+				return 'removed'; break;
 		}
 		return 'undefined'; // <- 未定義および完了済みを含む
 	}
@@ -138,6 +153,15 @@ module.exports = function(_options){
 			}
 
 			var currentData = shift();
+
+			if(status[currentData.id] == 99){
+				// 削除された Queue Item
+				status[currentData.id] = undefined; delete(status[currentData.id]); // <- 処理済み にステータスを変更
+				threads[threadNumber].active = false; // 予約したスレッドを解放
+				runQueue();
+				return;
+			}
+
 
 			// ステータスを 実行中 に変更
 			status[currentData.id] = 2;

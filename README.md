@@ -194,17 +194,38 @@ var queue = new it79.queue({
 	'process': function(data, done, queryInfo){
 		// キュー1件あたりの処理
 		console.log('---- process:', data);
-		done();
+		setTimeout(function(){
+			done(); // callback
+		}, 100);
 	}
 });
-queue.push({"queueData": "Queue 1"});
-queue.push({"queueData": "Queue 2"});
-queue.push({"queueData": "Queue 3"});
-queue.push({"queueData": "Queue 4"});
+var queueItemId1 = queue.push({"queueData": "Queue 1"});
+var queueItemId2 = queue.push({"queueData": "Queue 2"});
+var queueItemId3 = queue.push({"queueData": "Queue 3"});
+var queueItemId4 = queue.push({"queueData": "Queue 4"});
 var queueItemId5 = queue.push({"queueData": "Queue 5"});
 
+// Removing Queue Item
+console.log( queue.remove(queueItemId3) );
+
+// Updating Queue Item
+console.log( queue.update(queueItemId4, {"queueData": "Queue 4 updated"}) );
+
+// Checking Queue Item Status
 console.log( queue.checkStatus(queueItemId5) );
-    // This returns `waiting`, `progressing`, or `undefined`.
+    // This returns `waiting`, `progressing`, `removed`, or `undefined`.
+```
+
+result...
+
+```
+true
+true
+waiting
+---- process: { queueData: 'Queue 1' }
+---- process: { queueData: 'Queue 2' }
+---- process: { queueData: 'Queue 4 updated' }
+---- process: { queueData: 'Queue 5' }
 ```
 
 ## Change log
@@ -212,6 +233,8 @@ console.log( queue.checkStatus(queueItemId5) );
 ### iterate79@1.1.1 (2017-??-??)
 
 - `queue.update()` を追加。
+- `queue.remove()` を追加。
+- 新しい状態 `removed` を追加。
 
 ### iterate79@1.1.0 (2017-10-16)
 
