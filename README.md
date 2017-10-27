@@ -230,7 +230,7 @@ waiting
 
 ## Change log
 
-### iterate79@1.1.1 (2017-??-??)
+### iterate79@1.1.1 (2017-10-27)
 
 - `queue.update()` を追加。
 - `queue.remove()` を追加。
