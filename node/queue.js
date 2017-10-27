@@ -24,36 +24,36 @@ module.exports = function(_options){
 	}
 
 	/**
-	 * Queueを追加する
+	 * QueueItemを追加する
 	 */
 	this.push = function(data){
-		var newQueueId;
+		var newQueueItemId;
 		while(1){
 			var microtimestamp = (new Date).getTime();
-			newQueueId = microtimestamp + '-' + md5( microtimestamp );
-			if( status[newQueueId] ){
-				// 登録済みの Queue ID は発行不可
+			newQueueItemId = microtimestamp + '-' + md5( microtimestamp );
+			if( status[newQueueItemId] ){
+				// 登録済みの Queue Item ID は発行不可
 				continue;
 			}
 			break;
 		}
 
 		var rtn = queue.push({
-			'id': newQueueId,
+			'id': newQueueItemId,
 			'data': data
 		});
-		status[newQueueId] = 1; // 1 = 実行待ち, 2 = 実行中, undefined = 未登録 または 実行済み
+		status[newQueueItemId] = 1; // 1 = 実行待ち, 2 = 実行中, undefined = 未登録 または 実行済み
 
 		runQueue(); // キュー処理をキックする
-		return newQueueId;
+		return newQueueItemId;
 	}
 
 	/**
 	 * 状態を確認する
 	 */
-	this.checkStatus = function(queueId){
-		var st = status[queueId];
-		switch(status[queueId]){
+	this.checkStatus = function(queueItemId){
+		var st = status[queueItemId];
+		switch(status[queueItemId]){
 			case 1:
 				return 'waiting'; break;
 			case 2:

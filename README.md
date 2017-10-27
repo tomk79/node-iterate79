@@ -201,9 +201,9 @@ queue.push({"queueData": "Queue 1"});
 queue.push({"queueData": "Queue 2"});
 queue.push({"queueData": "Queue 3"});
 queue.push({"queueData": "Queue 4"});
-var queueId5 = queue.push({"queueData": "Queue 5"});
+var queueItemId5 = queue.push({"queueData": "Queue 5"});
 
-console.log( queue.checkStatus(queueId5) );
+console.log( queue.checkStatus(queueItemId5) );
     // This returns `waiting`, `progressing`, or `undefined`.
 ```
 
