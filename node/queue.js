@@ -38,7 +38,7 @@ module.exports = function(_options){
 			break;
 		}
 
-		var rtn = queue.push({
+		queue.push({
 			'id': newQueueItemId,
 			'data': data
 		});
@@ -46,6 +46,24 @@ module.exports = function(_options){
 
 		runQueue(); // キュー処理をキックする
 		return newQueueItemId;
+	}
+
+	/**
+	 * QueueItemを更新する
+	 */
+	this.update = function(queueItemId, data){
+		var status = this.checkStatus(queueItemId);
+		if(status != 'waiting'){
+			// 待ち状態でなければ更新できない
+			return false;
+		}
+		for(var idx in queue){
+			if(queue[idx].id == queueItemId){
+				queue[idx].data = data;
+				break;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -59,7 +77,7 @@ module.exports = function(_options){
 			case 2:
 				return 'progressing'; break;
 		}
-		return 'undefined';
+		return 'undefined'; // <- 未定義および完了済みを含む
 	}
 
 	/**
@@ -120,13 +138,11 @@ module.exports = function(_options){
 			}
 
 			var currentData = shift();
-			// console.log(currentData, queue);
-			// console.log(threadNumber);
 
 			// ステータスを 実行中 に変更
 			status[currentData.id] = 2;
 
-			// 予約したスレッドに、Queue ID を記憶する
+			// 予約したスレッドに、Queue Item ID を記憶する
 			threads[threadNumber].active = currentData.id;
 
 			// 実行

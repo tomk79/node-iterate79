@@ -69,6 +69,7 @@ describe('Queue', function() {
 		queue.push({'sleep': 1000, 'char': 'j'});
 		queue.push({'sleep': 1000, 'char': 'k'});
 		var idL = queue.push({'sleep': 1000, 'char': 'l'});
+		assert.ok(queue.update(idL, {'sleep': 1000, 'char': 'L'})); // Lのみ大文字に置き換え
 
 		setTimeout(function(){
 			var allStatus = queue.getAllStatus();
@@ -89,7 +90,7 @@ describe('Queue', function() {
 		}, 1200);
 
 		setTimeout(function(){
-			assert.equal(charFin, 'bcdefghaijkl'); // 並列処理なので、時間が係る処理の前に短い処理が割り込むことができる
+			assert.equal(charFin, 'bcdefghaijkL'); // 並列処理なので、時間が係る処理の前に短い処理が割り込むことができる
 			done();
 		}, 4200); // 3スレッド並列処理されるので、合計秒数より早く終る
 	});

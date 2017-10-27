@@ -209,6 +209,10 @@ console.log( queue.checkStatus(queueItemId5) );
 
 ## Change log
 
+### iterate79@1.1.1 (2017-??-??)
+
+- `queue.update()` を追加。
+
 ### iterate79@1.1.0 (2017-10-16)
 
 - 新しいAPI `it79.queue()` を追加。
